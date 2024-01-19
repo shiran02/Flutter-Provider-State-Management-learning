@@ -1,6 +1,8 @@
+import 'package:cart_app/data_class.dart';
 import 'package:cart_app/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class SecondPage extends StatelessWidget {
   const SecondPage({super.key});
@@ -21,10 +23,15 @@ class SecondPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
 
-                      Text('0', style: TextStyle(
+                      Consumer<DataClass>(builder: (context,dataClass,child){
+                        return Text(
+                        '${dataClass.x}', style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                        ),),
+                        ),
+                        );
+                      }),
+
                       const Text(
                         "-- Total",
                         style: TextStyle(
@@ -32,6 +39,8 @@ class SecondPage extends StatelessWidget {
                             fontWeight: FontWeight.bold
                         ),
                       ),
+
+
                     ],
                   ),
                 ),
@@ -45,24 +54,34 @@ class SecondPage extends StatelessWidget {
                   children: [
                       GestureDetector(
                         onTap:(){
-                         Get.snackbar("Item", "Can not decrease more",
-                            backgroundColor: Colors.black,
-                             colorText: Colors.white,
-                             titleText: Text(
-                               "Item",
-                               style: TextStyle(
-                                 fontSize: 40,
-                                 color: Colors.white
-                               ),
-                             ),
-                             messageText: Text(
-                               "Can not reduce more",
-                               style: TextStyle(
-                                   fontSize: 20,
-                                   color: Colors.white
-                               ),
-                             )
-                           );
+
+                         // Provider.of<DataClass>(context,listen: false).decrementX();
+                          
+
+                          if( context.read<DataClass>().x > 0){
+                                context.read<DataClass>().decrementX();
+                          }else{
+                                  Get.snackbar("Item", "Can not decrease more Than 0",
+                                      backgroundColor: Colors.black,
+                                      colorText: Colors.white,
+                                      titleText: Text(
+                                        "Item",
+                                        style: TextStyle(
+                                          fontSize: 40,
+                                          color: Colors.white
+                                        ),
+                                      ),
+                                      messageText: Text(
+                                        "Can not reduce more",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white
+                                        ),
+                                      )
+                                    );
+                          }
+
+                      
                       },
                         child: Container(
                           height:60,

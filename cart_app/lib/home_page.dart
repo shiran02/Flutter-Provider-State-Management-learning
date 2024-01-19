@@ -1,6 +1,8 @@
+import 'package:cart_app/data_class.dart';
 import 'package:cart_app/second_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -16,10 +18,17 @@ class MyHomePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               children: [
-                Text('0', style: TextStyle(
-                    fontSize: 20,fontWeight: FontWeight.bold
-                  ),),
+
+                Consumer<DataClass>(builder:(context , dataClass, child){
+                      return Text(
+                                '${dataClass.x}', style: TextStyle(
+                                   fontSize: 20,fontWeight: FontWeight.bold
+                                ),
+                              );
+                }),
+
                 Spacer(),
+
                 Text("Total", style: TextStyle(fontWeight: FontWeight.bold,
                 fontSize: 40),)
               ],
@@ -31,9 +40,11 @@ class MyHomePage extends StatelessWidget {
             child: Row(
               children: [
 
-                GestureDetector(child: Container(
-                  width: 60,
-                  height: 60,
+                GestureDetector(
+                  child: 
+                  Container(
+                    width: 60,
+                    height: 60,
                   child: Icon(Icons.add),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -45,7 +56,13 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ),
                 onTap: (){
-                  Get.snackbar("Item", "Can not more than this",
+
+                  if(context.read<DataClass>().x < 5){
+                    Provider.of<DataClass>(context , listen: false).incrementX();
+
+                  }else{
+                   Get.snackbar(
+                    "Item", "Can not more than 5",
                         backgroundColor: Colors.black,
                         colorText: Colors.white,
                         titleText: Text(
@@ -63,6 +80,12 @@ class MyHomePage extends StatelessWidget {
                           ),
                         )
                     );
+                  }
+
+                 
+
+                 
+
                 },),
                 Spacer(),
                 Container(
